@@ -1,0 +1,15 @@
+
+---
+title: "travis_CI: who or what is it?"
+author: "Carrie Wright, slides at https://carriewright11.github.io/travis"
+
+---
+
+```{r}
+
+library(here)
+library(rmarkdown)
+#render("Untitled2.Rmd", html_document(toc = TRUE))
+
+```
+hello

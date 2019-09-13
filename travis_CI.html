@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Travis CI and pkgdown: who or what is it?</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'Travis CI and pkgdown: who or what is it?',
+                        subtitle: 'How to add Travis CI to a repo without a package and other tips',
+                useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                        favIcon: 'logos.png',
+              },
+
+      // Author information
+      presenters: [
+            {
+        name:  'Carrie Wright' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <link href="travis_CI_files/ioslides-13.5.1/fonts/fonts.css" rel="stylesheet" />
+  <link href="travis_CI_files/ioslides-13.5.1/theme/css/default.css" rel="stylesheet" />
+  <link href="travis_CI_files/ioslides-13.5.1/theme/css/phone.css" rel="stylesheet" />
+  <script src="travis_CI_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+  <script src="travis_CI_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+  <script src="travis_CI_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+  <script src="travis_CI_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+  <script src="travis_CI_files/ioslides-13.5.1/js/hammer.js"></script>
+  <script src="travis_CI_files/ioslides-13.5.1/js/slide-controller.js"></script>
+  <script src="travis_CI_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    summary {
+      display: list-item;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
+
+    slides > slide:not(.nobackground):before {
+      font-size: 12pt;
+      content: "";
+      position: absolute;
+      bottom: 20px;
+      left: 60px;
+      background: url(logos.png) no-repeat 0 50%;
+      -webkit-background-size: 30px 30px;
+      -moz-background-size: 30px 30px;
+      -o-background-size: 30px 30px;
+      background-size: 30px 30px;
+      padding-left: 40px;
+      height: 30px;
+      line-height: 1.9;
+    }
+  </style>
+
+  <link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+        <aside class="gdbar"><img src="LOGOS.png"></aside>
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+          </hgroup>
+  </slide>
+
+<style type="text/css">
+article {
+  font-size: 24pt;
+}
+<style>
+/* Your other css */
+
+.section .reveal .state-background {
+    background: url(https://jhudatascience.org/images/dasl.png);
+    background-position: center center;
+    background-attachment: fixed;
+}
+</style>
+</style>
+
+<slide class=""><hgroup><h2>Travis CI</h2></hgroup><article  id="travis-ci">
+
+<ul>
+<li><p>What is <strong>Travis</strong>? Is this a person? Why is everyone talking about Travis???</p></li>
+<li><p>Have you ever heard someone say that they used Travis to test their package? Who is this amazing code guru?!</p></li>
+</ul>
+
+<img width="200px" src='https://image.shutterstock.com/image-illustration/binary-data-code-guru-600w-4067116.jpg' title=''/>
+
+</article></slide><slide class=""><hgroup><h2>Allow me to introduce you</h2></hgroup><article  id="allow-me-to-introduce-you">
+
+<p><img src="figures/travis-mascot.png" width="20%" style="display: block; margin: auto;" /></p>
+
+<ul>
+<li><p>Turns out Travis is not a person after all, although there is a pretty awesome mascot that looks like a person.</p></li>
+<li><p>Check <a href='https://blog.travis-ci.com/2013-07-17-introducing-travis-our-new-mascot' title=''>here</a> if you want to know more about why Travis is called Travis</p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>What Travis CI really is…</h2></hgroup><article  id="what-travis-ci-really-is">
+
+<ul>
+<li><p>This was actually a company in Berlin, Germany that was founded in 2001 that was recently acquired by Idera.</p></li>
+<li><p>It is really a <strong>Continuous Integration</strong> and <strong>Continuous Deployment</strong> platform.</p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>What is Continuous Integration?</h2></hgroup><article  id="what-is-continuous-integration">
+
+<ul>
+<li><a href='https://en.wikipedia.org/wiki/Continuous_integration#Software' title=''>Continuous Integration (CI)</a> is &ldquo;the practice of merging all developer’s copies to a shared mainline several times a day&rdquo;</li>
+</ul>
+
+<p>*like pushing your code to the master branch on github regularly</p>
+
+</article></slide><slide class=""><hgroup><h2>How Continuous Integration works?</h2></hgroup><article  id="how-continuous-integration-works">
+
+<ul>
+<li><p>Typically programmers build their code and complete tests on their code before they commit</p></li>
+<li><strong>Build</strong> meaning: &ldquo;the process of converting the human-readable source artifacts into machine-readable artifacts&rdquo; according to <a href='https://stackoverflow.com/questions/1622506/programming-definitions-what-exactly-is-building' title=''>users on stackoverflow</a>
+
+<ul>
+<li>rendering</li>
+<li>generating reports</li>
+<li><p>compilation etc.</p>
+
+<pre >           ***Travis helps automate this process***</pre></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>What is Continuous Delivery / Deployment?</h2></hgroup><article  id="what-is-continuous-delivery-deployment">
+
+<ul>
+<li><p>Basically you are getting your code ready to be deployed at all times - ie it can build without issues.</p></li>
+<li><p>Travis-CI can directly link to github - thus it can also deliver or deploy websites of your code through github/github pages. We will talk more about that later.</p></li>
+</ul>
+
+<p><a href='https://blog.travis-ci.com/2019-05-30-setting-up-a-ci-cd-process-on-github' title=''>https://blog.travis-ci.com/2019-05-30-setting-up-a-ci-cd-process-on-github</a></p>
+
+</article></slide><slide class=""><hgroup><h2>How Travis works</h2></hgroup><article  id="how-travis-works">
+
+<center>
+
+<img width="700px" src='https://www.altexsoft.com/media/2019/02/word-image-60.png' title=''/> <a href='https://www.altexsoft.com/blog/engineering/comparison-of-most-popular-continuous-integration-tools-jenkins-teamcity-bamboo-travis-ci-and-more/' title=''>ref</a>
+
+</center>
+
+</article></slide><slide class=""><hgroup><h2>How Travis works</h2></hgroup><article  id="how-travis-works-1">
+
+<ul>
+<li><a href='https://github.com/travis-ci/travis-build' title=''>travis-build</a> uses the .travis.yml file that must be in your root project directory to create a bash script to run be run in the build environment by <a href='https://github.com/travis-ci/worker' title=''>travis-worker</a></li>
+</ul>
+
+<p><a href='https://github.com/travis-ci/travis-ci' title=''>ref</a></p>
+
+</article></slide><slide class=""><hgroup><h2>Does Travis also work on private repos?</h2></hgroup><article  id="does-travis-also-work-on-private-repos">
+
+<p>Yes, Travis CI works on private and public projects!</p>
+
+</article></slide><slide class=""><hgroup><h2>Lets add Travis to our repos!:</h2></hgroup><article  id="lets-add-travis-to-our-repos">
+
+<ul>
+<li><p>We will show you how to add Travis CI to a repo without a package.</p></li>
+<li><p>If you have a package look at one of these other tutorials: <a href='https://docs.travis-ci.com/user/tutorial/' title=''>https://docs.travis-ci.com/user/tutorial/</a> <a href='https://github.com/lcolladotor/r-travis' title=''>https://github.com/lcolladotor/r-travis</a> <a href='https://github.com/craigcitro/r-travis/wiki' title=''>https://github.com/craigcitro/r-travis/wiki</a> <a href='https://neuroconductor.org/tutorials/getting_ready_for_submission' title=''>https://neuroconductor.org/tutorials/getting_ready_for_submission</a></p></li>
+<li><p>Adding Travis CI to a package can be a tad easier/faster with the right tools.</p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>How do we do this? step 1: sign up/sign in to travis-ci</h2></hgroup><article  id="how-do-we-do-this-step-1-sign-upsign-in-to-travis-ci">
+
+<p><img src="figures/login_travis.png" width="100%" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>How do we do this? step2: activate github repos</h2></hgroup><article  id="how-do-we-do-this-step2-activate-github-repos">
+
+<p><img src="figures/activate.png" width="80%" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Organization repo activation</h2></hgroup><article  id="organization-repo-activation">
+
+<p><img src="figures/activate_org_repo.png" width="100%" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>How do we do this? step 3: create a .travis.yml file</h2></hgroup><article  id="how-do-we-do-this-step-3-create-a-.travis.yml-file">
+
+<p><img src="figures/leo_derfinder_yml.png" width="40%" style="display: block; margin: auto;" /> Commit and push to github!!</p>
+
+<p>For more details on what to include see <a href='https://github.com/craigcitro/r-travis/wiki#configuration-options' title=''>here</a> and <a href='https://support.rstudio.com/hc/en-us/articles/200486518-Customizing-Package-Build-Options' title=''>here</a>.</p>
+
+</article></slide><slide class=""><hgroup><h2>Our .travis.yml file for our repo that doesn’t have a package</h2></hgroup><article  id="our-.travis.yml-file-for-our-repo-that-doesnt-have-a-package">
+
+<p><img src="figures/case_study_yml.png" width="50%" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Our DESCRIPTION file</h2></hgroup><article  id="our-description-file">
+
+<ul>
+<li>In our case we are adding travis to repos that are not packages</li>
+<li>But we still need to have a description file with info about our dependencies, authors, etc. even if just placeholders <img src="figures/case_study_DESCRIPTION.png" width="38%" style="display: block; margin: auto;" /></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Add github package dependencies</h2></hgroup><article  id="add-github-package-dependencies">
+
+<p>Manually add a field called &ldquo;Remotes&rdquo; specifying where the package is on github <img src="figures/github_pkg_description.png" width="38%" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Add Travis badge</h2></hgroup><article  id="add-travis-badge">
+
+<ol>
+<li>Go to the desired activated repository where you added .travis.yml and/or DESCRIPTION files</li>
+<li>Click the build gray button</li>
+<li>Select Markdown format</li>
+<li>Copy and paste the result into your README file</li>
+</ol>
+
+<p><img src="figures/addingbadge.png" width="60%" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Trouble shooting</h2></hgroup><article  id="trouble-shooting">
+
+<ul>
+<li>If your repo fails, you can modify your files and then run the test again.</li>
+<li>Look at your errors to see what went wrong. <img src="figures/restartbuild.png" width="50%" style="display: block; margin: auto;" /><img src="figures/errors.png" width="50%" style="display: block; margin: auto;" /></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>If Travis didn’t seem to run a build - check requests for more information.</h2></hgroup><article  id="if-travis-didnt-seem-to-run-a-build---check-requests-for-more-information.">
+
+<p><img src="figures/Troubleshooting.png" width="75%" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>pkgdown</h2></hgroup><article  id="pkgdown">
+
+<ul>
+<li>pkgdown allows you to create a website of your repo</li>
+<li>Here is an example: <a href='https://crunch.io/r/crplyr/' title=''>https://crunch.io/r/crplyr/</a> <img src="figures/pkgdownex.png" width="80%" style="display: block; margin: auto;" /></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Go to github repo settings and select the desired branch as source</h2></hgroup><article  id="go-to-github-repo-settings-and-select-the-desired-branch-as-source">
+
+<p><img src="figures/githubpages.png" width="80%" style="display: block; margin: auto;" /></p>
+
+</article></slide><slide class=""><hgroup><h2>Create _pkgdown.yml and if you haven’t yet and a .Rbuildignore file <img src="figures/_pkgdown.yml.png" width="80%" style="display: block; margin: auto;" /><img src="figures/Rbuildignore.png" width="80%" style="display: block; margin: auto;" /></h2></hgroup><article  id="create-_pkgdown.yml-and-if-you-havent-yet-and-a-.rbuildignore-file">
+
+</article></slide><slide class=""><hgroup><h2>Build and check your website</h2></hgroup><article  id="build-and-check-your-website">
+
+<ul>
+<li><p>Commit and push all your changes!</p></li>
+<li><p>Your website URL is the one listed in your github settings <img src="figures/githubpagesurl.png" width="80%" style="display: block; margin: auto;" /></p></li>
+<li><p>For more info check <a href='https://usethis.r-lib.org/reference/use_pkgdown.html' title=''>here</a>.</p></li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Alternative Faster Method</h2></hgroup><article  id="alternative-faster-method">
+
+<p>You can also create only the DESCRIPTION file manually, then use the usethis package to create yml files for travis and github pages</p>
+
+<pre class = 'prettyprint lang-r'>library(usethis)
+usethis::use_readme_rmd() 
+# if you only have an README.md file
+# this will also add the travis badge
+# make sure you update the .md and .Rmd files!
+usethis::use_travis() 
+# this will create the .travis.yml file
+# this will also pull up https://travis-ci.org to allow you activate this repo easily
+usethis::use_pkgdown() 
+# this will create .Rbuildignore and _pkdown.yml files</pre>
+
+</article></slide><slide class=""><hgroup><h2>Additional Info</h2></hgroup><article  id="additional-info">
+
+<ul>
+<li><p>The <a href='https://en.wikipedia.org/wiki/Travis_CI' title=''>wikipedia page</a> has additional information on Travis CI in general.</p></li>
+<li><p>This <a href='https://medium.com/@zbbergma/using-travisci-for-continuous-integration-to-github-organizations-9ad1d96bd624' title=''>link</a> will tell you more about how Travis CI works.</p></li>
+<li><p>Remember you can use the <a href='https://www.rdocumentation.org/packages/usethis/versions/1.5.0/topics/use_pkgdown' title=''>usethis package</a> to easily use pkgdown and travis for a package. This did not work as easily in our case as we were adding Travis CI and pkgdown to repos without a package. Here is a great <a href='https://neuroconductor.org/tutorials/getting_ready_for_submission' title=''>tutorial</a>.</p></li>
+<li><p>Here is a <a href='https://docs.travis-ci.com/user/common-build-problems/#my-build-fails-unexpectedly' title=''>list</a> of common build problems.</p></li>
+</ul></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
