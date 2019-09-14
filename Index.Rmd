@@ -1,13 +1,16 @@
 ---
-title: "travis_CI: who or what is it?"
-author: "Carrie Wright, slides at https://carriewright11.github.io/travis"
+title: "Travis CI and pkgdown:  Who or what is it?"
+subtitle: <b><u>How to add Travis CI to a repo without a package and other tips</u></b>
+author: <b>[Carrie Wright](https://carriewright11.GitHub.io)</b>
+
 output:
   html_document:
     toc: true
     toc_float: true
     number_sections: false
-    theme: united
-    highlight: tango
+    theme: cosmo
+    
+
     
 ---
 
@@ -18,6 +21,8 @@ output:
    });
 </script>
 
+
+
 ```{r setup, include =FALSE}
 
 library(here)
@@ -26,6 +31,29 @@ library(rmarkdown)
 
 ```
 
+&nbsp;
+&nbsp;
+
+--- 
+
+## Summary
+
+In this tutorial we will discuss:
+
+* What Travis CI is and how it works
+
+* We will demonstrate two methods for adding Travis CI to a GitHub repo that does not contain a package - so in our case our repo contains an .rmd and we want to test if it renders
+
+    1) We will show how this process can be done manually, (this helps demonstrate what other packages that make this process faster actually do)
+    
+    2) We will show a shorter version of the process using the [usethis](https://usethis.r-lib.org/) package
+
+* We will discuss what pkgdown is and how to use it
+
+* We will provide additional references including tutorials for adding Travis to a repo that does contain a package
+
+---
+
 ## Travis CI 
 
 * What is **Travis**? Is this a person? Why is everyone talking about Travis???
@@ -33,34 +61,63 @@ library(rmarkdown)
 * Have you ever heard someone say that they used Travis to test their package?
   Who is this amazing code guru?!
   
+&nbsp;
+&nbsp;
   
 ![](https://image.shutterstock.com/image-illustration/binary-data-code-guru-600w-4067116.jpg){width=200px}
 
-  
-## Allow me to introduce you
+&nbsp;
+&nbsp;
+
+---
+
+### Allow me to introduce you
 ```{r, echo = FALSE, out.width="20%"}
 knitr::include_graphics(here::here("figures/travis-mascot.png"))
 ```
 
 * Turns out Travis is not a person after all, although there is a pretty awesome mascot that looks like a person.
 
+&nbsp;
+
+
 * Check [here](https://blog.travis-ci.com/2013-07-17-introducing-travis-our-new-mascot) if you want to know more about why Travis is called Travis 
 
-## What Travis CI really is...
+&nbsp;
+&nbsp;
+
+---
+
+### What Travis CI really is...
 
 * This was actually a company in Berlin, Germany that was founded in 2001 that was recently acquired by Idera.
 
+&nbsp;
+
+
 * It is really a **Continuous Integration**  and **Continuous Deployment** platform.
 
-  
-## What is Continuous Integration?
+&nbsp;
+&nbsp;
+
+---
+
+### What is Continuous Integration?
 
 * [Continuous Integration (CI)](https://en.wikipedia.org/wiki/Continuous_integration#Software) is "the practice of merging all developer's copies to a shared mainline several times a day"
  
- *like pushing your code to the master branch on github regularly
+ *like pushing your code to the master branch on GitHub regularly
 
-## How Continuous Integration works?
+&nbsp;
+&nbsp;
+
+---
+
+### How Continuous Integration works?
 * Typically programmers build their code and complete tests on their code before they commit
+
+&nbsp;
+
 
 * **Build** meaning: "the process of converting the human-readable source artifacts into machine-readable artifacts" according to [users on stackoverflow](https://stackoverflow.com/questions/1622506/programming-definitions-what-exactly-is-building)
   + rendering
@@ -68,14 +125,27 @@ knitr::include_graphics(here::here("figures/travis-mascot.png"))
   + compilation etc.
 
                    ***Travis helps automate this process***
+&nbsp;
+&nbsp;
 
-## What is Continuous Delivery / Deployment?
+---
+
+### What is Continuous Delivery / Deployment?
 
 * Basically you are getting your code ready to be deployed at all times - ie it can build without issues.
 
-* Travis-CI can directly link to github - thus it can also deliver or deploy websites of your code through github/github pages. We will talk more about that later.
+&nbsp;
 
-https://blog.travis-ci.com/2019-05-30-setting-up-a-ci-cd-process-on-github
+* Travis-CI can directly link to GitHub - thus it can also deliver or deploy websites of your code through GitHub/GitHub pages. We will talk more about that later.
+
+&nbsp;
+
+https://blog.travis-ci.com/2019-05-30-setting-up-a-ci-cd-process-on-GitHub
+
+&nbsp;
+&nbsp;
+
+---
 
 ## How Travis works
 <center>
@@ -83,80 +153,145 @@ https://blog.travis-ci.com/2019-05-30-setting-up-a-ci-cd-process-on-github
 [ref](https://www.altexsoft.com/blog/engineering/comparison-of-most-popular-continuous-integration-tools-jenkins-teamcity-bamboo-travis-ci-and-more/)
 </center>
                       
+&nbsp;
+&nbsp;
 
-## How Travis works
+---
+### How Travis works
 
-* [travis-build](https://github.com/travis-ci/travis-build) uses the .travis.yml file that must be in your root project directory to create a bash script to run be run in the build environment by [travis-worker](https://github.com/travis-ci/worker)
+* [travis-build](https://GitHub.com/travis-ci/travis-build) uses the .travis.yml file that must be in your root project directory to create a bash script to run be run in the build environment by [travis-worker](https://GitHub.com/travis-ci/worker)
 
-[ref](https://github.com/travis-ci/travis-ci)
+[ref](https://GitHub.com/travis-ci/travis-ci)
 
-## Does Travis also work on private repos?
+&nbsp;
+&nbsp;
+
+---
+
+### Does Travis also work on private repos?
 
 Yes, Travis CI works on private and public projects!
 
+&nbsp;
+&nbsp;
 
-## Lets add Travis to our repos!:
+---
+
+## Lets add Travis to our repos!
 
 * We will show you how to add Travis CI to a repo without a package.
 
+&nbsp;
+
 * If you have a package look at one of these other tutorials:
 https://docs.travis-ci.com/user/tutorial/
-https://github.com/lcolladotor/r-travis
-https://github.com/craigcitro/r-travis/wiki
+https://GitHub.com/lcolladotor/r-travis
+https://GitHub.com/craigcitro/r-travis/wiki
 https://neuroconductor.org/tutorials/getting_ready_for_submission
+
+&nbsp;
 
 * Adding Travis CI to a package can be a tad easier/faster with the right tools.
 
-## How do we do this? step 1: sign up/sign in to travis-ci
+&nbsp;
+&nbsp;
+
+---
+
+### How do we do this? step 1: sign up/sign in to travis-ci
 
 ```{r, echo = FALSE, out.width="100%"}
 knitr::include_graphics(here::here("figures/login_travis.png"))
 ```
 
+&nbsp;
+&nbsp;
 
-## How do we do this? step2: activate github repos
+---
+
+### How do we do this? step2: activate GitHub repos
 ```{r, echo = FALSE, out.width="80%"}
 knitr::include_graphics(here::here("figures/activate.png"))
 ```
 
-## Organization repo activation
+&nbsp;
+&nbsp;
+
+---
+
+### Organization repo activation
 ```{r, echo = FALSE, out.width="100%"}
 knitr::include_graphics(here::here("figures/activate_org_repo.png"))
 ```
 
-## How do we do this? step 3: create a .travis.yml file 
+&nbsp;
+&nbsp;
+
+---
+
+### How do we do this? step 3: create a .travis.yml file 
 
 ```{r, echo = FALSE, out.width="40%"}
 knitr::include_graphics(here::here("figures/leo_derfinder_yml.png"))
-#https://github.com/lcolladotor/r-travis/blob/master/sample.travis.yml
+#https://GitHub.com/lcolladotor/r-travis/blob/master/sample.travis.yml
 ```
-Commit and push to github!!
 
-For more details on what to include see [here](https://github.com/craigcitro/r-travis/wiki#configuration-options)
+&nbsp;
+
+Commit and push to GitHub!!
+
+&nbsp;
+
+For more details on what to include see [here](https://GitHub.com/craigcitro/r-travis/wiki#configuration-options)
 and [here](https://support.rstudio.com/hc/en-us/articles/200486518-Customizing-Package-Build-Options).
 
-## Our .travis.yml file for our repo that doesn't have a package
+&nbsp;
+&nbsp;
+
+---
+
+### Our .travis.yml file for our repo that doesn't have a package
 ```{r, echo = FALSE, out.width="50%"}
 knitr::include_graphics(here::here("figures/case_study_yml.png"))
 ```
 
+&nbsp;
+&nbsp;
 
-## Our DESCRIPTION file
+---
+
+### Our DESCRIPTION file
 * In our case we are adding travis to repos that are not packages
 * But we still need to have a description file with info about our dependencies, authors, etc. even if just placeholders
+
+&nbsp;
+
 ```{r, echo = FALSE, out.width="38%"}
 knitr::include_graphics(here::here("figures/case_study_DESCRIPTION.png"))
 ```
 
+&nbsp;
+&nbsp;
 
-## Add github package dependencies
-Manually add a field called "Remotes" specifying where the package is on github
+---
+
+### Add GitHub package dependencies
+&nbsp;
+Manually add a field called "Remotes" specifying where the package is on GitHub
 ```{r, echo = FALSE, out.width="38%"}
-knitr::include_graphics(here::here("figures/github_pkg_description.png"))
+knitr::include_graphics(here::here("figures/GitHub_pkg_description.png"))
 
 ```
 
-## Add Travis badge
+&nbsp;
+&nbsp;
+
+---
+
+### Add Travis badge
+
+&nbsp;
+
 1. Go to the desired activated repository where you added .travis.yml and/or DESCRIPTION files
 2. Click the build gray button
 3. Select Markdown format
@@ -166,6 +301,11 @@ knitr::include_graphics(here::here("figures/github_pkg_description.png"))
 knitr::include_graphics(here::here("figures/addingbadge.png"))
 ```
 
+&nbsp;
+&nbsp;
+
+---
+
 ## Trouble shooting
 * If your repo fails, you can modify your files and then run the test again. 
 * Look at your errors to see what went wrong.
@@ -174,11 +314,20 @@ knitr::include_graphics(here::here("figures/restartbuild.png"))
 knitr::include_graphics(here::here("figures/errors.png"))
 ```
 
-## If Travis didn't seem to run a build - check requests for more information.
+&nbsp;
+&nbsp;
+
+---
+
+### If Travis didn't seem to run a build - check requests for more information.
 ```{r, echo = FALSE, out.width="75%"}
 knitr::include_graphics(here::here("figures/Troubleshooting.png"))
 ```
 
+&nbsp;
+&nbsp;
+
+---
 
 ## pkgdown
 * pkgdown allows you to create a website of your repo
@@ -188,14 +337,23 @@ https://crunch.io/r/crplyr/
 knitr::include_graphics(here::here("figures/pkgdownex.png"))
 ```
 
+&nbsp;
+&nbsp;
 
-## Go to github repo settings and select the desired branch as source
+---
+
+### Go to GitHub repo settings and select the desired branch as source
 ```{r, echo = FALSE, out.width="80%"}
-knitr::include_graphics(here::here("figures/githubpages.png"))
+knitr::include_graphics(here::here("figures/GitHubpages.png"))
 ```
 
+&nbsp;
+&nbsp;
 
-## Create _pkgdown.yml and if you haven't yet and a .Rbuildignore file
+---
+
+### Create _pkgdown.yml and if you haven't yet and a .Rbuildignore file
+
 ```{r, echo = FALSE, out.width="80%"}
 knitr::include_graphics(here::here("figures/_pkgdown.yml.png"))
 
@@ -203,20 +361,29 @@ knitr::include_graphics(here::here("figures/Rbuildignore.png"))
 
 ```
 
+&nbsp;
+&nbsp;
 
-## Build and check your website
+---
+
+### Build and check your website
 
 * Commit and push all your changes!
 
-* Your website URL is the one listed in your github settings
+* Your website URL is the one listed in your GitHub settings
 ```{r, echo = FALSE, out.width="80%"}
-knitr::include_graphics(here::here("figures/githubpagesurl.png"))
+knitr::include_graphics(here::here("figures/GitHubpagesurl.png"))
 ```
 
 * For more info check [here](https://usethis.r-lib.org/reference/use_pkgdown.html).
 
+&nbsp;
+&nbsp;
+
+---
+
 ## Alternative Faster Method
-You can also create only the DESCRIPTION file manually, then use the usethis package to create yml files for travis and github pages
+You can also create only the DESCRIPTION file manually, then use the usethis package to create the other necessary files
 
 ```{r, echo = TRUE, eval = FALSE}
 library(usethis)
@@ -231,11 +398,18 @@ usethis::use_pkgdown()
 # this will create .Rbuildignore and _pkdown.yml files
 ```
 
+&nbsp;
+&nbsp;
+
+---
+
 ## Additional Info
 * The [wikipedia page](https://en.wikipedia.org/wiki/Travis_CI) has additional information on Travis CI in general.
 
-* This [link](https://medium.com/@zbbergma/using-travisci-for-continuous-integration-to-github-organizations-9ad1d96bd624) will tell you more about how Travis CI works.
+* This [link](https://medium.com/@zbbergma/using-travisci-for-continuous-integration-to-GitHub-organizations-9ad1d96bd624) will tell you more about how Travis CI works.
 
 * Remember you can use the [usethis package](https://www.rdocumentation.org/packages/usethis/versions/1.5.0/topics/use_pkgdown) to easily use pkgdown and travis for a package. This did not work as easily in our case as we were adding Travis CI and pkgdown to repos without a package. Here is a great [tutorial](https://neuroconductor.org/tutorials/getting_ready_for_submission).
 
 * Here is a [list](https://docs.travis-ci.com/user/common-build-problems/#my-build-fails-unexpectedly) of common build problems.
+
+---
